@@ -1,0 +1,6 @@
+D:\C#\AdventOfCode\AdventOfCode\bin\Debug\AdventOfCode.exe
+D:\C#\AdventOfCode\AdventOfCode\bin\Debug\AdventOfCode.pdb
+D:\C#\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.csproj.AssemblyReference.cache
+D:\C#\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.csproj.CoreCompileInputs.cache
+D:\C#\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.exe
+D:\C#\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.pdb
