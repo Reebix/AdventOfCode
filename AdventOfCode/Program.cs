@@ -16,7 +16,7 @@ internal class Program
     public static void CreateDays()
     {
         var time = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
-        for (var i = time.Day; i > 0; i--)
+        for (var i = 25; i > 0; i--)
         {
             var path = $"../../days/Day{i}.txt";
             if (!File.Exists(path)) File.Create(path);

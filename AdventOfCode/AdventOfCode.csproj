@@ -43,12 +43,35 @@
     <ItemGroup>
         <Compile Include="Day.cs"/>
         <Compile Include="days\Day1.cs"/>
+        <Compile Include="days\Day2.cs"/>
+        <Compile Include="days\Day3.cs"/>
+        <Compile Include="days\Day4.cs"/>
+        <Compile Include="days\Day5.cs"/>
+        <Compile Include="days\Day6.cs"/>
+        <Compile Include="days\Day7.cs"/>
+        <Compile Include="days\Day8.cs"/>
+        <Compile Include="days\Day9.cs"/>
+        <Compile Include="days\Day10.cs"/>
+        <Compile Include="days\Day11.cs"/>
+        <Compile Include="days\Day12.cs"/>
+        <Compile Include="days\Day13.cs"/>
+        <Compile Include="days\Day14.cs"/>
+        <Compile Include="days\Day15.cs"/>
+        <Compile Include="days\Day16.cs"/>
+        <Compile Include="days\Day17.cs"/>
+        <Compile Include="days\Day18.cs"/>
+        <Compile Include="days\Day19.cs"/>
+        <Compile Include="days\Day20.cs"/>
+        <Compile Include="days\Day21.cs"/>
+        <Compile Include="days\Day22.cs"/>
+        <Compile Include="days\Day23.cs"/>
+        <Compile Include="days\Day24.cs"/>
+        <Compile Include="days\Day25.cs"/>
         <Compile Include="days\TemplateDay.cs"/>
         <Compile Include="Program.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="bin\Debug\Day1.txt"/>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="bin\Debug\"/>
