@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using AdventOfCode.days;
+using System.Threading;
 
 namespace AdventOfCode;
 
@@ -8,9 +8,24 @@ internal class Program
 {
     public static void Main(string[] args)
     {
-        //CreateDays();
-        new Day1();
-        Console.WriteLine();
+        var time = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+        if (time.Month != 12)
+        {
+            Console.WriteLine("It's not December yet!");
+            return;
+        }
+
+        for (var i = 1; i <= time.Day && i <= 25; i++)
+        {
+            var type = Type.GetType($"AdventOfCode.days.Day{i}");
+            if (type == null)
+            {
+                Console.WriteLine($"Day {i} not found");
+                continue;
+            }
+
+            Activator.CreateInstance(type);
+        }
     }
 
     public static void CreateDays()

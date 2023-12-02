@@ -11,9 +11,13 @@ public abstract class Day
     {
         Input = File.ReadAllLines($"../../days/Day{day}.txt");
         // ReSharper disable VirtualMemberCallInConstructor
+        var start = DateTime.Now;
+        Console.WriteLine($"-------------------- Day {day}: --------------------");
         Run();
-        Run(true);
         Console.WriteLine();
+        Run(true);
+        Console.WriteLine($"this day took {(DateTime.Now - start).TotalMilliseconds}ms");
+
         // ReSharper restore VirtualMemberCallInConstructor
     }
 
