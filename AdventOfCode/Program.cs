@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 
 namespace AdventOfCode;
 
@@ -15,7 +14,11 @@ internal class Program
             return;
         }
 
-        for (var i = 1; i <= time.Day && i <= 25; i++)
+        // TODO: remove when whole month is done
+        var i = 1;
+        if (args.Length == 0 && time is { Month: 12, Day: <= 25 }) i = time.Day;
+
+        for (; i <= time.Day && i <= 25; i++)
         {
             var type = Type.GetType($"AdventOfCode.days.Day{i}");
             if (type == null)
