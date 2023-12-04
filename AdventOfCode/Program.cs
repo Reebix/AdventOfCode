@@ -14,7 +14,6 @@ internal class Program
             return;
         }
 
-        // TODO: remove when whole month is done
         var i = 1;
         if (args.Length == 0 && time is { Month: 12, Day: <= 25 }) i = time.Day;
 
