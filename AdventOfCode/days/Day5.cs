@@ -107,68 +107,35 @@ public class Day5 : Day
         Part2:
         lowestLocation = long.MaxValue;
 
-        List<(long, long)> dividedSeedRanges = new();
-
-        
-        // divide seed ranges into smaller ranges
-         var divisionCount = 1024;
-        
+        // split ranges into chunks of 1000000
+        var chunks = new List<(long, long)>();
         foreach (var (rangeStart, rangeLength) in seedRanges)
         {
-            var rangeEnd = rangeStart + rangeLength;
-            var rangeSize = rangeLength / divisionCount;
-
-            for (var i = 0; i < divisionCount; i++)
+            for (var i = rangeStart; i < rangeStart + rangeLength + 1000000; i += 1000000)
             {
-                var start = rangeStart + i * rangeSize;
-                var length = i == divisionCount - 1 ? rangeEnd - start : rangeSize;
+                var end = i + 100000;
+                if (end > rangeStart + rangeLength)
+                {
+                    end = rangeStart + rangeLength;
+                }
 
-                dividedSeedRanges.Add((start, length));
+                chunks.Add((i, end));
             }
         }
         
-        Console.WriteLine(dividedSeedRanges.Count);
-        Console.WriteLine(dividedSeedRanges.Sum(r => r.Item2));
+        var chunkCount = chunks.Count;
+        var chunkIndex = 0;
         
-        Console.WriteLine(seedRanges.Count);
-        Console.WriteLine(seedRanges.Sum(r => r.Item2));
-       
-
-        var finishedThreads = 0;
-        /*
-       foreach (var (start, length) in dividedSeedRanges)
-       {
-           var thread = new Thread(o =>
-           {
-               for (var i = 0; i < length; i++)
-               {
-                   var seed = start + i;
-                   var soil = seedToSoilMap.MapSource(seed);
-                   var fertilizer = soilToFertilizerMap.MapSource(soil);
-                   var water = fertilizerToWaterMap.MapSource(fertilizer);
-                   var light = waterToLightMap.MapSource(water);
-                   var temperature = lightToTemperatureMap.MapSource(light);
-                   var humidity = temperatureToHumidityMap.MapSource(temperature);
-                   var location = humidityToLocationMap.MapSource(humidity);
-
-                   if (lowestLocation > location) lowestLocation = location;
-               }
-
-               Console.WriteLine($"Thread finished: {finishedThreads++} / {dividedSeedRanges.Count}");
-           });
-
-           thread.Start();
-           thread.Join();
-       }
-       */
-
-        Parallel.For(0, seedRanges.Count, i =>
+        
+        List<long> chunkLowestLocations = new();
+        // convert all seeds down to location
+        Parallel.ForEach(chunks, chunk =>
         {
-            var (start, length) = seedRanges[i];
-            for (var j = 0; j < length; j++)
+            var lowLoc = long.MaxValue;
+            for (var i = 0; i < chunk.Item2; i++)
             {
-                var seed = start + j;
-                var soil = seedToSoilMap.MapSource(seed);
+                
+                var soil = seedToSoilMap.MapSource(chunk.Item1 + i);
                 var fertilizer = soilToFertilizerMap.MapSource(soil);
                 var water = fertilizerToWaterMap.MapSource(fertilizer);
                 var light = waterToLightMap.MapSource(water);
@@ -176,13 +143,17 @@ public class Day5 : Day
                 var humidity = temperatureToHumidityMap.MapSource(temperature);
                 var location = humidityToLocationMap.MapSource(humidity);
 
-                if (lowestLocation > location) lowestLocation = location;
+                if (lowLoc > location) lowLoc = location;
             }
-
-            Console.WriteLine($"Thread finished: {finishedThreads++} / {dividedSeedRanges.Count}");
+            
+            Interlocked.Increment(ref chunkIndex);
+            Console.WriteLine($"chunk {chunkIndex}/{chunkCount} done");
+            
+            chunkLowestLocations.Add(lowLoc);
         });
         
-        Console.WriteLine(lowestLocation);
+        // not 3128308
+        Console.WriteLine(chunkLowestLocations.Min());
     }
 
     private class Map
