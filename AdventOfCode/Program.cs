@@ -16,7 +16,6 @@ internal class Program
 
         var i = 1;
         if (args.Length == 0 && time is { Month: 12, Day: <= 25 }) i = time.Day;
-
         for (; i <= time.Day && i <= 25; i++)
         {
             var type = Type.GetType($"AdventOfCode.days.Day{i}");
