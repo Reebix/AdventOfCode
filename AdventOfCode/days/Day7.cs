@@ -8,6 +8,7 @@ namespace AdventOfCode.days;
 public class Day7 : Day
 {
     private static string[] _labelArray = { "A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2" };
+    private static bool _isPart2;
 
     public Day7() : base(7)
     {
@@ -15,8 +16,9 @@ public class Day7 : Day
 
     protected override void Run(bool isPart2 = false)
     {
-        if(isPart2) _labelArray = new []{"A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J" };
-        
+        _isPart2 = isPart2;
+        if (isPart2) _labelArray = new[] { "A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J" };
+
         List<Hand> hands = new();
         foreach (var s in Input)
         {
@@ -41,7 +43,8 @@ public class Day7 : Day
             totalValue += hand.Bid * multiplier;
         }
 
-        File.WriteAllText("test.txt", string.Join("\n", hands.Select(h => $"{h.Cards} {h.Bid}")));
+        File.WriteAllText("test.txt",
+            string.Join("\n", hands.Select(h => $"{h.Cards} {h.Bid} {GetHandType(h.Cards)}")));
         // 250137961 is too high
         Console.WriteLine(totalValue);
     }
@@ -58,55 +61,36 @@ public class Day7 : Day
         if (hand1Type > hand2Type) return true;
         if (hand1Type < hand2Type) return false;
 
-       
 
         var hand1Array = original.ToCharArray();
         var hand2Array = comparator.ToCharArray();
         var hand1ArrayLength = hand1Array.Length;
-        
+
         // check if hand ist like 2266A > 22A6T
         if (hand1Type == Type.TwoPair)
         {
             var charAmountDict = new Dictionary<char, int>();
             var hand2CharAmountDict = new Dictionary<char, int>();
-            
+
             foreach (var c in hand1Array)
-            {
                 if (charAmountDict.ContainsKey(c))
-                {
                     charAmountDict[c]++;
-                }
                 else
-                {
                     charAmountDict.Add(c, 1);
-                }
-            }
-            
+
             foreach (var c in hand2Array)
-            {
                 if (hand2CharAmountDict.ContainsKey(c))
-                {
                     hand2CharAmountDict[c]++;
-                }
                 else
-                {
                     hand2CharAmountDict.Add(c, 1);
-                }
-            }
-            
+
             // check for 2 pairs with multiple cards
-            if (charAmountDict.Count == 3 && hand2CharAmountDict.Count != 3)
-            {
-                return false;
-            }
-            
+            if (charAmountDict.Count == 3 && hand2CharAmountDict.Count != 3) return false;
+
             // check for 2 pairs with multiple cards
-            if (charAmountDict.Count != 3 && hand2CharAmountDict.Count == 3)
-            {
-                return true;
-            }
+            if (charAmountDict.Count != 3 && hand2CharAmountDict.Count == 3) return true;
         }
-        
+
         for (var i = 0; i < hand1ArrayLength; i++)
         {
             var hand1Index = Array.IndexOf(_labelArray, hand1Array[i].ToString());
@@ -118,37 +102,34 @@ public class Day7 : Day
         return false;
     }
 
-    private static Type GetHandType(string hand)
-    {
-        var handType = Type.HighCard;
-        var handArray = hand.ToCharArray();
-        // check five of a kind
-        if (GetAmountOf(hand, handArray[0]) == 5) return Type.FiveOfAKind;
+  private static Type GetHandType(string hand)
+{
+    // TODO fix j part from breaking part 1
+    var handType = Type.HighCard;
+    
+    var handArray = hand.ToCharArray();
+    // check five of a kind
+    if (handArray.Any(c => (_isPart2 && c != 'J' ? GetAmountOf(hand, c) + GetAmountOf(hand, 'J') : GetAmountOf(hand, c)) == 5))
+        return Type.FiveOfAKind;
+    // check four of a kind
+    if (handArray.Any(c => (_isPart2 && c != 'J' ? GetAmountOf(hand, c) + GetAmountOf(hand, 'J') : GetAmountOf(hand, c)) == 4))
+        return Type.FourOfAKind;
+    // check full house
+    if (handArray.Any(c => (_isPart2 && c != 'J' ? GetAmountOf(hand, c) + GetAmountOf(hand, 'J') : GetAmountOf(hand, c)) == 3) &&
+        handArray.Any(c => (_isPart2 && c != 'J' ? GetAmountOf(hand, c) + GetAmountOf(hand, 'J') : GetAmountOf(hand, c)) == 2))
+        return Type.FullHouse;
+    // check three of a kind
+    if (handArray.Any(c => (_isPart2 && c != 'J' ? GetAmountOf(hand, c) + GetAmountOf(hand, 'J') : GetAmountOf(hand, c)) == 3))
+        return Type.ThreeOfAKind;
+    // check two pair
+    if (handArray.Count(c => (_isPart2 && c != 'J' ? GetAmountOf(hand, c) + GetAmountOf(hand, 'J') : GetAmountOf(hand, c)) == 2) == 2)
+        return Type.TwoPair;
+    // check one pair
+    if (handArray.Any(c => (_isPart2 && c != 'J' ? GetAmountOf(hand, c) + GetAmountOf(hand, 'J') : GetAmountOf(hand, c)) == 2))
+        return Type.OnePair;
 
-        // check four of a kind
-        if (handArray.Any(c => GetAmountOf(hand, c) == 4))
-            return Type.FourOfAKind;
-        // check full house
-        if (handArray.Any(c => GetAmountOf(hand, c) == 3) &&
-            handArray.Any(c => GetAmountOf(hand, c) == 2))
-            return Type.FullHouse;
-        // check three of a kind
-        if (handArray.Any(c => GetAmountOf(hand, c) == 3))
-            return Type.ThreeOfAKind;
-        // check two pair
-        if (handArray.Any(c => GetAmountOf(hand, c) == 2) &&
-            handArray.Any(c => GetAmountOf(hand, c) == 2))
-            return Type.TwoPair;
-        // check one pair
-        if (handArray.Any(c => GetAmountOf(hand, c) == 2))
-            return Type.OnePair;
-
-
-        // check four of a kind
-
-
-        return handType;
-    }
+    return handType;
+}
 
     private static int GetAmountOf(string hand, char card)
     {
