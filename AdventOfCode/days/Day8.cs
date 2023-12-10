@@ -72,7 +72,10 @@ public class Day8 : Day
             currentNodes = tmpNodes;
             tmpNodes = new List<string>();
             // check if all nodes are Z
-            currentNodes.ForEach(node => allNodesAreZ = node.EndsWith("Z") && allNodesAreZ);
+            currentNodes.ForEach(node =>
+            {
+                if(!node.EndsWith("Z")) allNodesAreZ = false;
+            });
         }
         
         Console.WriteLine(total);
