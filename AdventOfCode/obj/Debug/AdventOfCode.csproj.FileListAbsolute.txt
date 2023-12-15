@@ -4,3 +4,4 @@ D:\C#\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.csproj.AssemblyReference.
 D:\C#\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.csproj.CoreCompileInputs.cache
 D:\C#\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.exe
 D:\C#\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.pdb
+D:\C#\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.csproj.SuggestedBindingRedirects.cache

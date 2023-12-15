@@ -1,3 +1,5 @@
+using System.Data;
+
 namespace AdventOfCode.days;
 
 public class Day11 : Day
@@ -9,5 +11,6 @@ public class Day11 : Day
 
     protected override void Run(bool isPart2 = false)
     {
+        var dt = new DataTable();
     }
 }
